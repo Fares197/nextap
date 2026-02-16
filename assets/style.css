@@ -1,0 +1,183 @@
+/* Custom styles for Nextap */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5; /* Light gray background */
+    color: #333;
+}
+
+.navbar {
+    background-color: #007bff; /* Blue navbar */
+    border-bottom: 1px solid #0056b3;
+    margin-bottom: 20px;
+}
+
+.navbar .nav-link {
+    color: #fff !important; /* White text for nav links */
+}
+
+.navbar .nav-link:hover {
+    color: #e9ecef !important; /* Lighter white on hover */
+}
+
+.navbar-brand {
+    color: #fff !important;
+    font-weight: bold;
+}
+
+.container {
+    padding-top: 20px;
+}
+
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: #007bff; /* Blue header for cards */
+    color: #fff;
+    font-weight: bold;
+    border-bottom: none;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.card-body {
+    background-color: #fff; /* White body for cards */
+}
+
+.alert {
+    margin-top: 20px;
+    border-radius: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-info:hover {
+    background-color: #117a8b;
+    border-color: #117a8b;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #1e7e34;
+    border-color: #1e7e34;
+}
+
+/* Dashboard specific styles */
+.dashboard-card .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px; /* Ensure consistent card height */
+}
+
+.dashboard-card .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #007bff;
+}
+
+.dashboard-card .card-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.dashboard-section-title {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Table styling */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+.table tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Form input styling */
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.footer {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    border-top: 1px solid #0056b3;
+}

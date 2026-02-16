@@ -1,0 +1,69 @@
+<% layout("layout") %>
+
+<div class="container mt-4">
+    <h1 class="mb-4">⚙️ إعدادات النظام</h1>
+
+    <form action="/settings/update" method="POST">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">معلومات الشركة</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="companyName" class="form-label">اسم الشركة:</label>
+                    <input type="text" class="form-control" id="companyName" name="companyName" value="<%= settings.companyName || '' %>">
+                </div>
+                <div class="mb-3">
+                    <label for="companyAddress" class="form-label">عنوان الشركة:</label>
+                    <input type="text" class="form-control" id="companyAddress" name="companyAddress" value="<%= settings.companyAddress || '' %>">
+                </div>
+                <div class="mb-3">
+                    <label for="companyPhone" class="form-label">هاتف الشركة:</label>
+                    <input type="text" class="form-control" id="companyPhone" name="companyPhone" value="<%= settings.companyPhone || '' %>">
+                </div>
+                <div class="mb-3">
+                    <label for="companyEmail" class="form-label">بريد الشركة الإلكتروني:</label>
+                    <input type="email" class="form-control" id="companyEmail" name="companyEmail" value="<%= settings.companyEmail || '' %>">
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">إعدادات الطباعة ثلاثية الأبعاد</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="defaultMaterial" class="form-label">المادة الافتراضية:</label>
+                    <input type="text" class="form-control" id="defaultMaterial" name="defaultMaterial" value="<%= settings.defaultMaterial || '' %>">
+                </div>
+                <div class="mb-3">
+                    <label for="printerSettings" class="form-label">إعدادات الطابعة:</label>
+                    <textarea class="form-control" id="printerSettings" name="printerSettings" rows="3"><%= settings.printerSettings || '' %></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">إعدادات مداليات NFC</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="nfcTagProvider" class="form-label">مزود شرائح NFC:</label>
+                    <input type="text" class="form-control" id="nfcTagProvider" name="nfcTagProvider" value="<%= settings.nfcTagProvider || '' %>">
+                </div>
+                <div class="mb-3">
+                    <label for="nfcProgrammingSoftware" class="form-label">برنامج برمجة NFC:</label>
+                    <input type="text" class="form-control" id="nfcProgrammingSoftware" name="nfcProgrammingSoftware" value="<%= settings.nfcProgrammingSoftware || '' %>">
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">إعدادات عامة</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="currency" class="form-label">العملة:</label>
+                    <input type="text" class="form-control" id="currency" name="currency" value="<%= settings.currency || 'JOD' %>">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">حفظ الإعدادات</button>
+    </form>
+</div>

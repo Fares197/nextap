@@ -1,20 +1,28 @@
 <% layout("layout") %>
 
 <div class="header">
-    <h1>قائمة المشتريات</h1>
+    <h1>قائمة المواد الخام (Filament)</h1>
     <div class="buttons">
-        <a href="/export/purchases" class="btn-success">📥 تصدير CSV</a>
+        <a href="/export/filament" class="btn-success">📥 تصدير CSV</a>
         <button class="btn-primary" onclick="printPDF()">🖨️ طباعة</button>
     </div>
 </div>
 
 <div class="form-section">
-    <h3>✚ إضافة مشتريات جديدة</h3>
-    <form action="/purchases/add" method="POST">
+    <h3>✚ إضافة مواد خام جديدة</h3>
+    <form action="/filament/add" method="POST">
         <div class="form-group">
             <div>
-                <label>اسم المنتج</label>
-                <input type="text" name="product" required>
+                <label>اللون</label>
+                <input type="text" name="color" required>
+            </div>
+            <div>
+                <label>الوزن (جرام)</label>
+                <input type="number" name="weight" required>
+            </div>
+            <div>
+                <label>المادة</label>
+                <input type="text" name="material" required>
             </div>
             <div>
                 <label>الكمية</label>
@@ -34,32 +42,35 @@
 </div>
 
 <div class="search-filter">
-    <input type="text" id="searchInput" placeholder="🔍 ابحث عن منتج..." onkeyup="filterTable()">
+    <input type="text" id="searchInput" placeholder="🔍 ابحث عن مادة خام..." onkeyup="filterTable()">
 </div>
 
-<% if (purchases.length > 0) { %>
-    <table id="purchasesTable">
+<% if (filament.length > 0) { %>
+    <table id="filamentTable">
         <thead>
             <tr>
-                <th>المنتج</th>
+                <th>اللون</th>
+                <th>الوزن</th>
+                <th>المادة</th>
                 <th>الكمية</th>
                 <th>السعر</th>
                 <th>التاريخ</th>
-                <th>الإجمالي</th>
                 <th>الإجراءات</th>
             </tr>
         </thead>
         <tbody>
-            <% purchases.forEach(p => { %>
-                <tr data-id="<%= p.id %>">
-                    <td><input type="text" class="editable" data-field="product" value="<%= p.product %>"></td>
-                    <td><input type="number" class="editable" data-field="quantity" value="<%= p.quantity %>"></td>
-                    <td><input type="number" class="editable" data-field="price" step="0.01" value="<%= p.price %>"></td>
-                    <td><input type="date" class="editable" data-field="date" value="<%= p.date %>"></td>
-                    <td><strong>JOD <%= (p.quantity * p.price).toFixed(2) %></strong></td>
+            <% filament.forEach(f => { %>
+                <tr data-id="<%= f.id %>">
+                    <td><input type="text" class="editable" data-field="color" value="<%= f.color %>"></td>
+                    <td><input type="number" class="editable" data-field="weight" value="<%= f.weight %>"></td>
+                    <td><input type="text" class="editable" data-field="material" value="<%= f.material %>"></td>
+                    <td><input type="number" class="editable" data-field="quantity" value="<%= f.quantity %>"></td>
+                    <td><input type="number" class="editable" data-field="price" step="0.01" value="<%= f.price %>"></td>
+                    <td><input type="date" class="editable" data-field="date" value="<%= f.date %>"></td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-danger" onclick="deleteRow(<%= p.id %>, '/purchases/delete')">حذف</button>
+                            <button class="btn-danger" onclick="deleteRow(<%= f.id %>, 
+'/filament/delete')">حذف</button>
                         </div>
                     </td>
                 </tr>
@@ -68,8 +79,8 @@
     </table>
 <% } else { %>
     <div class="empty-message">
-        <p>لا توجد مشتريات حتى الآن</p>
-        <p style="font-size: 12px; margin-top: 10px;">أضف مشتريات جديدة باستخدام النموذج أعلاه</p>
+        <p>لا توجد مواد خام حتى الآن</p>
+        <p style="font-size: 12px; margin-top: 10px;">أضف مواد خام جديدة باستخدام النموذج أعلاه</p>
     </div>
 <% } %>
 
@@ -77,33 +88,32 @@
 
 
     function printPDF() {
-        const table = document.getElementById("purchasesTable");
+        const table = document.getElementById("filamentTable");
         if (!table) {
             alert("لا توجد بيانات للطباعة");
             return;
         }
         const printWindow = window.open("", "", "height=600,width=800");
-        printWindow.document.write("<html><head><title>فاتورة المشتريات</title>");
+        printWindow.document.write("<html><head><title>قائمة المواد الخام</title>");
         printWindow.document.write("<style>body { font-family: Arial; direction: rtl; padding: 20px; } .header { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 15px; } .logo { width: 60px; height: 60px; margin-left: 15px; } h2 { text-align: center; color: #2c3e50; margin: 0; } table { width: 100%; border-collapse: collapse; margin-top: 20px; } th { background: #3498db; color: white; padding: 10px; text-align: right; } td { padding: 10px; border-bottom: 1px solid #ddd; text-align: right; } .footer { text-align: center; margin-top: 20px; color: #7f8c8d; font-size: 12px; }</style>");
         printWindow.document.write("</head><body>");
-        printWindow.document.write("<div class=\"header\"><img src=\"/assets/logo.png\" alt=\"Logo\" class=\"logo\"><h2>فاتورة المشتريات - Nextap (JOD)</h2></div>");
+        printWindow.document.write("<div class=\"header\"><img src=\"/assets/logo.png\" alt=\"Logo\" class=\"logo\"><h2>قائمة المواد الخام - Nextap</h2></div>");
         printWindow.document.write("<p style=\"text-align: center; color: #555;\">التاريخ: " + new Date().toLocaleDateString("ar-SA") + "</p>");
-        printWindow.document.write("<p style=\"text-align: center; color: #555;\">العملة: JOD</p>");
         printWindow.document.write(table.outerHTML);
         printWindow.document.write("<div class=\"footer\"><p>شكراً لتعاملكم معنا</p></div>");
-        printWindow.document.write("</body></html>");
         printWindow.document.close();
         printWindow.print();
     }
 
     function filterTable() {
         const input = document.getElementById("searchInput").value.toLowerCase();
-        const table = document.getElementById("purchasesTable");
+        const table = document.getElementById("filamentTable");
         if (!table) return;
         const rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
         for (let row of rows) {
-            const product = row.querySelector("input[data-field=\"product\"]").value.toLowerCase();
-            row.style.display = product.includes(input) ? "" : "none";
+            const color = row.querySelector("input[data-field=\"color\"]").value.toLowerCase();
+            const material = row.querySelector("input[data-field=\"material\"]").value.toLowerCase();
+            row.style.display = (color.includes(input) || material.includes(input)) ? "" : "none";
         }
     }
 
@@ -114,7 +124,7 @@
             const field = this.dataset.field;
             const value = this.value;
 
-            fetch("/purchases/update", {
+            fetch("/filament/update", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, field, value })

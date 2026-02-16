@@ -1,0 +1,72 @@
+<% layout("../layout") %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📇 البطاقات الرقمية</h1>
+    <a href="/digital-cards/create" class="btn btn-primary">✚ إنشاء بطاقة جديدة</a>
+</div>
+
+<div class="row">
+    <% if (cards.length > 0) { %>
+        <% cards.forEach(card => { %>
+            <div class="col-md-4 mb-4" id="card-<%= card.id %>">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary"><%= card.name %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= card.title %></h6>
+                        <p class="card-text small text-truncate"><%= card.bio %></p>
+                        
+                        <div class="mb-3">
+                            <small class="text-muted d-block">الرابط المباشر:</small>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control bg-light" value="<%= 'https://nextap.im/c/' + card.slug %>" readonly id="link-<%= card.id %>">
+                                <button class="btn btn-outline-secondary" type="button" onclick="copyLink('<%= card.id %>')">نسخ</button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a href="/c/<%= card.slug %>" target="_blank" class="btn btn-sm btn-info text-white">معاينة</a>
+                            <a href="/digital-cards/edit/<%= card.id %>" class="btn btn-sm btn-warning">تعديل</a>
+                            <button onclick="deleteCard('<%= card.id %>')" class="btn btn-sm btn-danger">حذف</button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <small class="text-muted">القالب: <%= card.template %> | اللون: <span style="display:inline-block; width:12px; height:12px; background:<%= card.theme_color %>; border-radius:50%"></span></small>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <div class="col-12 text-center py-5">
+            <div class="display-1 text-muted mb-4">📇</div>
+            <h3>لا توجد بطاقات رقمية حتى الآن</h3>
+            <p class="text-muted">ابدأ بإنشاء أول بطاقة عمل رقمية احترافية لك أو لموظفيك.</p>
+            <a href="/digital-cards/create" class="btn btn-primary">إنشاء أول بطاقة</a>
+        </div>
+    <% } %>
+</div>
+
+<script>
+function copyLink(id) {
+    const input = document.getElementById('link-' + id);
+    input.select();
+    document.execCommand('copy');
+    showNotification('تم نسخ الرابط بنجاح', 'success');
+}
+
+function deleteCard(id) {
+    if (confirm('هل أنت متأكد من حذف هذه البطاقة؟')) {
+        fetch('/digital-cards/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('card-' + id).remove();
+                showNotification('تم حذف البطاقة بنجاح', 'success');
+            }
+        });
+    }
+}
+</script>

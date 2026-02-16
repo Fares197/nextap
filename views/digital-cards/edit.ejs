@@ -1,0 +1,97 @@
+<% layout("../layout") %>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h4 class="mb-0">✏️ تعديل البطاقة الرقمية: <%= card.name %></h4>
+                </div>
+                <div class="card-body p-4">
+                    <form action="/digital-cards/edit/<%= card.id %>" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">الاسم الكامل</label>
+                                <input type="text" name="name" class="form-control" required value="<%= card.name %>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">المسمى الوظيفي</label>
+                                <input type="text" name="title" class="form-control" required value="<%= card.title %>">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">الرابط المختصر (Slug)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">nextap.im/c/</span>
+                                <input type="text" class="form-control bg-light" value="<%= card.slug %>" readonly disabled>
+                            </div>
+                            <small class="text-muted">لا يمكن تغيير الرابط المختصر بعد الإنشاء لضمان استقرار الروابط المشتركة.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">نبذة تعريفية</label>
+                            <textarea name="bio" class="form-control" rows="3"><%= card.bio %></textarea>
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3 text-primary">📞 معلومات الاتصال</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">رقم الهاتف</label>
+                                <input type="tel" name="phone" class="form-control" value="<%= card.phone %>">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">البريد الإلكتروني</label>
+                                <input type="email" name="email" class="form-control" value="<%= card.email %>">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">الموقع الإلكتروني</label>
+                                <input type="url" name="website" class="form-control" value="<%= card.website %>">
+                            </div>
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3 text-primary">🌐 وسائل التواصل الاجتماعي</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">LinkedIn</label>
+                                <input type="text" name="linkedin" class="form-control" value="<%= card.linkedin %>">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Instagram</label>
+                                <input type="text" name="instagram" class="form-control" value="<%= card.instagram %>">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Twitter (X)</label>
+                                <input type="text" name="twitter" class="form-control" value="<%= card.twitter %>">
+                            </div>
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3 text-primary">🎨 التصميم والقالب</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">اختر القالب</label>
+                                <select name="template" class="form-select" required>
+                                    <option value="modern" <%= card.template === 'modern' ? 'selected' : '' %>>Modern (عصري)</option>
+                                    <option value="professional" <%= card.template === 'professional' ? 'selected' : '' %>>Professional (احترافي)</option>
+                                    <option value="creative" <%= card.template === 'creative' ? 'selected' : '' %>>Creative (إبداعي)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">لون السمة</label>
+                                <input type="color" name="theme_color" class="form-control form-control-color w-100" value="<%= card.theme_color %>">
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-warning btn-lg">تحديث البطاقة الرقمية</button>
+                            <a href="/digital-cards" class="btn btn-light">إلغاء</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

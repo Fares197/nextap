@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= card.name %> | بطاقة رقمية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --theme-color: <%= card.theme_color %>;
+        }
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2d3436;
+        }
+        .card-wrapper {
+            max-width: 500px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header-bg {
+            height: 180px;
+            background: linear-gradient(135deg, var(--theme-color) 0%, #2d3436 100%);
+            position: relative;
+        }
+        .profile-section {
+            text-align: center;
+            margin-top: -75px;
+            padding: 0 20px;
+        }
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 6px solid white;
+            background: #eee;
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .name {
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 15px;
+            color: #2d3436;
+        }
+        .title {
+            color: var(--theme-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .bio {
+            font-size: 15px;
+            color: #636e72;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .links-container {
+            padding: 0 30px 40px;
+        }
+        .action-btn {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #2d3436;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .action-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--theme-color);
+            color: var(--theme-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .action-btn i {
+            font-size: 20px;
+            margin-left: 15px;
+            width: 30px;
+            text-align: center;
+            color: var(--theme-color);
+        }
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #b2bec3;
+        }
+        .save-btn {
+            background: var(--theme-color);
+            color: white !important;
+            border: none;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .save-btn:hover {
+            opacity: 0.9;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="card-wrapper">
+        <div class="header-bg"></div>
+        <div class="profile-section">
+            <img src="/assets/logo.png" alt="<%= card.name %>" class="profile-img">
+            <h1 class="name"><%= card.name %></h1>
+            <p class="title"><%= card.title %></p>
+            <p class="bio"><%= card.bio %></p>
+        </div>
+
+        <div class="links-container">
+            <% if (card.phone) { %>
+                <a href="tel:<%= card.phone %>" class="action-btn">
+                    <i class="fas fa-phone"></i>
+                    <span>اتصال هاتفي</span>
+                </a>
+                <a href="https://wa.me/<%= card.phone.replace(/\s/g, '') %>" class="action-btn">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>واتساب</span>
+                </a>
+            <% } %>
+
+            <% if (card.email) { %>
+                <a href="mailto:<%= card.email %>" class="action-btn">
+                    <i class="fas fa-envelope"></i>
+                    <span>البريد الإلكتروني</span>
+                </a>
+            <% } %>
+
+            <% if (card.website) { %>
+                <a href="<%= card.website %>" target="_blank" class="action-btn">
+                    <i class="fas fa-globe"></i>
+                    <span>الموقع الإلكتروني</span>
+                </a>
+            <% } %>
+
+            <% if (card.linkedin) { %>
+                <a href="https://linkedin.com/in/<%= card.linkedin %>" target="_blank" class="action-btn">
+                    <i class="fab fa-linkedin"></i>
+                    <span>لينكد إن</span>
+                </a>
+            <% } %>
+
+            <% if (card.instagram) { %>
+                <a href="https://instagram.com/<%= card.instagram %>" target="_blank" class="action-btn">
+                    <i class="fab fa-instagram"></i>
+                    <span>إنستقرام</span>
+                </a>
+            <% } %>
+
+            <a href="#" class="action-btn save-btn" onclick="saveContact()">
+                <i class="fas fa-user-plus text-white"></i>
+                <span>حفظ في جهات الاتصال</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            تم الإنشاء بواسطة Nextap &copy; 2026
+        </div>
+    </div>
+
+    <script>
+    function saveContact() {
+        // يمكن إضافة منطق توليد ملف vCard هنا
+        alert('سيتم توليد ملف vCard قريباً');
+    }
+    </script>
+</body>
+</html>

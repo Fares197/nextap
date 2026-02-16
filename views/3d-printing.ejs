@@ -1,0 +1,79 @@
+<% layout("layout") %>
+
+<div class="container">
+    <h1>الطباعة ثلاثية الأبعاد</h1>
+    <p>هنا يمكنك إدارة المشاريع والطلبات المتعلقة بالطباعة ثلاثية الأبعاد والمجسمات.</p>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            مشاريع الطباعة الحالية
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>اسم المشروع</th>
+                        <th>العميل</th>
+                        <th>الحالة</th>
+                        <th>تاريخ البدء</th>
+                        <th>تاريخ التسليم المتوقع</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>نموذج معماري</td>
+                        <td>شركة البناء الحديثة</td>
+                        <td>قيد التنفيذ</td>
+                        <td>2026-02-01</td>
+                        <td>2026-02-20</td>
+                        <td><button class="btn btn-info btn-sm">تفاصيل</button></td>
+                    </tr>
+                    <tr>
+                        <td>قطع غيار مخصصة</td>
+                        <td>مصنع الأجهزة</td>
+                        <td>مكتمل</td>
+                        <td>2026-01-15</td>
+                        <td>2026-01-25</td>
+                        <td><button class="btn btn-info btn-sm">تفاصيل</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            إضافة مشروع طباعة جديد
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="mb-3">
+                    <label for="projectName" class="form-label">اسم المشروع</label>
+                    <input type="text" class="form-control" id="projectName">
+                </div>
+                <div class="mb-3">
+                    <label for="clientName" class="form-label">اسم العميل</label>
+                    <input type="text" class="form-control" id="clientName">
+                </div>
+                <div class="mb-3">
+                    <label for="projectStatus" class="form-label">الحالة</label>
+                    <select class="form-select" id="projectStatus">
+                        <option>قيد التنفيذ</option>
+                        <option>مكتمل</option>
+                        <option>معلق</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">تاريخ البدء</label>
+                    <input type="date" class="form-control" id="startDate">
+                </div>
+                <div class="mb-3">
+                    <label for="deliveryDate" class="form-label">تاريخ التسليم المتوقع</label>
+                    <input type="date" class="form-control" id="deliveryDate">
+                </div>
+                <button type="submit" class="btn btn-primary">إضافة مشروع</button>
+            </form>
+        </div>
+    </div>
+</div>

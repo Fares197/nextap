@@ -1,0 +1,101 @@
+<% layout("../layout") %>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">✨ إنشاء بطاقة رقمية جديدة</h4>
+                </div>
+                <div class="card-body p-4">
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger"><%= error %></div>
+                    <% } %>
+
+                    <form action="/digital-cards/create" method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">الاسم الكامل</label>
+                                <input type="text" name="name" class="form-control" required placeholder="مثال: فارس القحطاني">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">المسمى الوظيفي</label>
+                                <input type="text" name="title" class="form-control" required placeholder="مثال: مدير المشتريات">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">الرابط المختصر (Slug)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">nextap.im/c/</span>
+                                <input type="text" name="slug" class="form-control" required placeholder="fares-k" pattern="[a-z0-9\-]+">
+                            </div>
+                            <small class="text-muted">أحرف إنجليزية صغيرة، أرقام، وشرطات فقط.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">نبذة تعريفية</label>
+                            <textarea name="bio" class="form-control" rows="3" placeholder="تحدث عن نفسك أو شركتك باختصار..."></textarea>
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3 text-primary">📞 معلومات الاتصال</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">رقم الهاتف</label>
+                                <input type="tel" name="phone" class="form-control" placeholder="+966 50 000 0000">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">البريد الإلكتروني</label>
+                                <input type="email" name="email" class="form-control" placeholder="name@example.com">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">الموقع الإلكتروني</label>
+                                <input type="url" name="website" class="form-control" placeholder="https://example.com">
+                            </div>
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3 text-primary">🌐 وسائل التواصل الاجتماعي</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">LinkedIn</label>
+                                <input type="text" name="linkedin" class="form-control" placeholder="username">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Instagram</label>
+                                <input type="text" name="instagram" class="form-control" placeholder="username">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Twitter (X)</label>
+                                <input type="text" name="twitter" class="form-control" placeholder="username">
+                            </div>
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3 text-primary">🎨 التصميم والقالب</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">اختر القالب</label>
+                                <select name="template" class="form-select" required>
+                                    <option value="modern">Modern (عصري)</option>
+                                    <option value="professional">Professional (احترافي)</option>
+                                    <option value="creative">Creative (إبداعي)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">لون السمة</label>
+                                <input type="color" name="theme_color" class="form-control form-control-color w-100" value="#667eea">
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">إنشاء البطاقة الرقمية</button>
+                            <a href="/digital-cards" class="btn btn-light">إلغاء</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

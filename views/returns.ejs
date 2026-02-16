@@ -1,16 +1,16 @@
 <% layout("layout") %>
 
 <div class="header">
-    <h1>قائمة المشتريات</h1>
+    <h1>قائمة الإعادات</h1>
     <div class="buttons">
-        <a href="/export/purchases" class="btn-success">📥 تصدير CSV</a>
+        <a href="/export/returns" class="btn-success">📥 تصدير CSV</a>
         <button class="btn-primary" onclick="printPDF()">🖨️ طباعة</button>
     </div>
 </div>
 
 <div class="form-section">
-    <h3>✚ إضافة مشتريات جديدة</h3>
-    <form action="/purchases/add" method="POST">
+    <h3>✚ إضافة إعادات جديدة</h3>
+    <form action="/returns/add" method="POST">
         <div class="form-group">
             <div>
                 <label>اسم المنتج</label>
@@ -21,8 +21,8 @@
                 <input type="number" name="quantity" required>
             </div>
             <div>
-                <label>السعر</label>
-                <input type="number" name="price" step="0.01" required>
+                <label>السبب</label>
+                <input type="text" name="reason" required>
             </div>
             <div>
                 <label>التاريخ</label>
@@ -34,32 +34,39 @@
 </div>
 
 <div class="search-filter">
-    <input type="text" id="searchInput" placeholder="🔍 ابحث عن منتج..." onkeyup="filterTable()">
+    <input type="text" id="searchInput" placeholder="🔍 ابحث عن منتج أو سبب..." onkeyup="filterTable()">
 </div>
 
-<% if (purchases.length > 0) { %>
-    <table id="purchasesTable">
+<% if (returns.length > 0) { %>
+    <table id="returnsTable">
         <thead>
             <tr>
                 <th>المنتج</th>
                 <th>الكمية</th>
-                <th>السعر</th>
+                <th>السبب</th>
                 <th>التاريخ</th>
-                <th>الإجمالي</th>
+                <th>الحالة</th>
                 <th>الإجراءات</th>
             </tr>
         </thead>
         <tbody>
-            <% purchases.forEach(p => { %>
-                <tr data-id="<%= p.id %>">
-                    <td><input type="text" class="editable" data-field="product" value="<%= p.product %>"></td>
-                    <td><input type="number" class="editable" data-field="quantity" value="<%= p.quantity %>"></td>
-                    <td><input type="number" class="editable" data-field="price" step="0.01" value="<%= p.price %>"></td>
-                    <td><input type="date" class="editable" data-field="date" value="<%= p.date %>"></td>
-                    <td><strong>JOD <%= (p.quantity * p.price).toFixed(2) %></strong></td>
+            <% returns.forEach(r => { %>
+                <tr data-id="<%= r.id %>">
+                    <td><input type="text" class="editable" data-field="product" value="<%= r.product %>"></td>
+                    <td><input type="number" class="editable" data-field="quantity" value="<%= r.quantity %>"></td>
+                    <td><input type="text" class="editable" data-field="reason" value="<%= r.reason %>"></td>
+                    <td><input type="date" class="editable" data-field="date" value="<%= r.date %>"></td>
+                    <td>
+                        <select class="editable" data-field="status">
+                            <option value="<%= r.status %>" selected><%= r.status %></option>
+                            <option value="pending">قيد الانتظار</option>
+                            <option value="completed">مكتمل</option>
+                            <option value="rejected">مرفوض</option>
+                        </select>
+                    </td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-danger" onclick="deleteRow(<%= p.id %>, '/purchases/delete')">حذف</button>
+                            <button class="btn-danger" onclick="deleteReturn(<%= r.id %>)">حذف</button>
                         </div>
                     </td>
                 </tr>
@@ -68,42 +75,49 @@
     </table>
 <% } else { %>
     <div class="empty-message">
-        <p>لا توجد مشتريات حتى الآن</p>
-        <p style="font-size: 12px; margin-top: 10px;">أضف مشتريات جديدة باستخدام النموذج أعلاه</p>
+        <p>لا توجد إعادات حتى الآن</p>
+        <p style="font-size: 12px; margin-top: 10px;">أضف إعادات جديدة باستخدام النموذج أعلاه</p>
     </div>
 <% } %>
 
 <script>
-
+    function deleteReturn(id) {
+        if (confirm("هل أنت متأكد من حذف هذا العنصر؟")) {
+            fetch("/returns/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id })
+            }).then(() => location.reload());
+        }
+    }
 
     function printPDF() {
-        const table = document.getElementById("purchasesTable");
+        const table = document.getElementById("returnsTable");
         if (!table) {
             alert("لا توجد بيانات للطباعة");
             return;
         }
         const printWindow = window.open("", "", "height=600,width=800");
-        printWindow.document.write("<html><head><title>فاتورة المشتريات</title>");
+        printWindow.document.write("<html><head><title>قائمة الإعادات</title>");
         printWindow.document.write("<style>body { font-family: Arial; direction: rtl; padding: 20px; } .header { display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 15px; } .logo { width: 60px; height: 60px; margin-left: 15px; } h2 { text-align: center; color: #2c3e50; margin: 0; } table { width: 100%; border-collapse: collapse; margin-top: 20px; } th { background: #3498db; color: white; padding: 10px; text-align: right; } td { padding: 10px; border-bottom: 1px solid #ddd; text-align: right; } .footer { text-align: center; margin-top: 20px; color: #7f8c8d; font-size: 12px; }</style>");
         printWindow.document.write("</head><body>");
-        printWindow.document.write("<div class=\"header\"><img src=\"/assets/logo.png\" alt=\"Logo\" class=\"logo\"><h2>فاتورة المشتريات - Nextap (JOD)</h2></div>");
+        printWindow.document.write("<div class=\"header\"><img src=\"/assets/logo.png\" alt=\"Logo\" class=\"logo\"><h2>قائمة الإعادات - Nextap</h2></div>");
         printWindow.document.write("<p style=\"text-align: center; color: #555;\">التاريخ: " + new Date().toLocaleDateString("ar-SA") + "</p>");
-        printWindow.document.write("<p style=\"text-align: center; color: #555;\">العملة: JOD</p>");
         printWindow.document.write(table.outerHTML);
         printWindow.document.write("<div class=\"footer\"><p>شكراً لتعاملكم معنا</p></div>");
-        printWindow.document.write("</body></html>");
         printWindow.document.close();
         printWindow.print();
     }
 
     function filterTable() {
         const input = document.getElementById("searchInput").value.toLowerCase();
-        const table = document.getElementById("purchasesTable");
+        const table = document.getElementById("returnsTable");
         if (!table) return;
         const rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
         for (let row of rows) {
             const product = row.querySelector("input[data-field=\"product\"]").value.toLowerCase();
-            row.style.display = product.includes(input) ? "" : "none";
+            const reason = row.querySelector("input[data-field=\"reason\"]").value.toLowerCase();
+            row.style.display = (product.includes(input) || reason.includes(input)) ? "" : "none";
         }
     }
 
@@ -114,7 +128,7 @@
             const field = this.dataset.field;
             const value = this.value;
 
-            fetch("/purchases/update", {
+            fetch("/returns/update-status", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, field, value })

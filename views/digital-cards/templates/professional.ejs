@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= card.name %> | بطاقة عمل</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #2d3436;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .pro-card {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        .top-bar {
+            height: 10px;
+            background: <%= card.theme_color %>;
+        }
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 5px;
+        }
+        .job-title {
+            color: #636e72;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            display: block;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .contact-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #2d3436;
+            transition: 0.3s;
+        }
+        .contact-item:hover {
+            background: <%= card.theme_color %>;
+            color: white;
+        }
+        .contact-item i {
+            font-size: 18px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .contact-item span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .social-links a {
+            color: #b2bec3;
+            font-size: 20px;
+            transition: 0.3s;
+        }
+        .social-links a:hover {
+            color: <%= card.theme_color %>;
+        }
+        .vcard-btn {
+            width: 100%;
+            background: #2d3436;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="pro-card">
+        <div class="top-bar"></div>
+        <div class="content">
+            <div class="logo-box">
+                <img src="/assets/logo.png" alt="Logo">
+            </div>
+            <h1><%= card.name %></h1>
+            <span class="job-title"><%= card.title %></span>
+
+            <div class="contact-grid">
+                <% if (card.phone) { %>
+                    <a href="tel:<%= card.phone %>" class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>اتصال</span>
+                    </a>
+                    <a href="https://wa.me/<%= card.phone.replace(/\s/g, '') %>" class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>واتساب</span>
+                    </a>
+                <% } %>
+                <% if (card.email) { %>
+                    <a href="mailto:<%= card.email %>" class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>إيميل</span>
+                    </a>
+                <% } %>
+                <% if (card.website) { %>
+                    <a href="<%= card.website %>" target="_blank" class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <span>موقع</span>
+                    </a>
+                <% } %>
+            </div>
+
+            <div class="social-links">
+                <% if (card.linkedin) { %>
+                    <a href="https://linkedin.com/in/<%= card.linkedin %>" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <% } %>
+                <% if (card.instagram) { %>
+                    <a href="https://instagram.com/<%= card.instagram %>" target="_blank"><i class="fab fa-instagram"></i></a>
+                <% } %>
+                <% if (card.twitter) { %>
+                    <a href="https://twitter.com/<%= card.twitter %>" target="_blank"><i class="fab fa-twitter"></i></a>
+                <% } %>
+            </div>
+
+            <button class="vcard-btn" onclick="window.print()">🖨️ طباعة البطاقة</button>
+        </div>
+    </div>
+</body>
+</html>

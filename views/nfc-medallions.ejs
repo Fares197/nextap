@@ -1,0 +1,79 @@
+<% layout("layout") %>
+
+<div class="container">
+    <h1>مداليات NFC</h1>
+    <p>هنا يمكنك إدارة طلبات وتفاصيل مداليات NFC المخصصة.</p>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            طلبات مداليات NFC الحالية
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>اسم العميل</th>
+                        <th>نوع المدالية</th>
+                        <th>الكمية</th>
+                        <th>الحالة</th>
+                        <th>تاريخ الطلب</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>أحمد محمد</td>
+                        <td>مدالية مفتاح</td>
+                        <td>50</td>
+                        <td>قيد التجهيز</td>
+                        <td>2026-02-05</td>
+                        <td><button class="btn btn-info btn-sm">تفاصيل</button></td>
+                    </tr>
+                    <tr>
+                        <td>مؤسسة الأمل</td>
+                        <td>بطاقة عمل NFC</td>
+                        <td>200</td>
+                        <td>مكتمل</td>
+                        <td>2026-01-20</td>
+                        <td><button class="btn btn-info btn-sm">تفاصيل</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            إضافة طلب مدالية NFC جديد
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="mb-3">
+                    <label for="customerName" class="form-label">اسم العميل</label>
+                    <input type="text" class="form-control" id="customerName">
+                </div>
+                <div class="mb-3">
+                    <label for="medallionType" class="form-label">نوع المدالية</label>
+                    <input type="text" class="form-control" id="medallionType">
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">الكمية</label>
+                    <input type="number" class="form-control" id="quantity">
+                </div>
+                <div class="mb-3">
+                    <label for="orderStatus" class="form-label">الحالة</label>
+                    <select class="form-select" id="orderStatus">
+                        <option>قيد التجهيز</option>
+                        <option>مكتمل</option>
+                        <option>معلق</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="orderDate" class="form-label">تاريخ الطلب</label>
+                    <input type="date" class="form-control" id="orderDate">
+                </div>
+                <button type="submit" class="btn btn-primary">إضافة طلب</button>
+            </form>
+        </div>
+    </div>
+</div>

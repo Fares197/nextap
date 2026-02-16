@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= card.name %> | Creative Card</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #000;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        .creative-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000 0%, <%= card.theme_color %> 100%);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        .container-fluid {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .main-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 50px 30px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        }
+        .profile-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(to right, <%= card.theme_color %>, #fff);
+            margin: 0 auto 25px;
+        }
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #222;
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        .tagline {
+            font-size: 16px;
+            color: <%= card.theme_color %>;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        .grid-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .link-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: white;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .link-item:hover {
+            background: white;
+            color: black;
+            transform: scale(1.05);
+        }
+        .link-item i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .link-item span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .full-link {
+            grid-column: span 2;
+            background: <%= card.theme_color %>;
+            border: none;
+        }
+        .full-link:hover {
+            background: white;
+            color: <%= card.theme_color %>;
+        }
+    </style>
+</head>
+<body>
+    <div class="creative-bg"></div>
+    <div class="container-fluid">
+        <div class="main-card">
+            <div class="profile-ring">
+                <img src="/assets/logo.png" alt="Profile" class="profile-img">
+            </div>
+            <h1><%= card.name %></h1>
+            <p class="tagline"><%= card.title %></p>
+
+            <div class="grid-links">
+                <% if (card.phone) { %>
+                    <a href="tel:<%= card.phone %>" class="link-item">
+                        <i class="fas fa-phone"></i>
+                        <span>اتصال</span>
+                    </a>
+                <% } %>
+                <% if (card.email) { %>
+                    <a href="mailto:<%= card.email %>" class="link-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>إيميل</span>
+                    </a>
+                <% } %>
+                <% if (card.instagram) { %>
+                    <a href="https://instagram.com/<%= card.instagram %>" target="_blank" class="link-item">
+                        <i class="fab fa-instagram"></i>
+                        <span>إنستقرام</span>
+                    </a>
+                <% } %>
+                <% if (card.linkedin) { %>
+                    <a href="https://linkedin.com/in/<%= card.linkedin %>" target="_blank" class="link-item">
+                        <i class="fab fa-linkedin"></i>
+                        <span>لينكد إن</span>
+                    </a>
+                <% } %>
+                <% if (card.website) { %>
+                    <a href="<%= card.website %>" target="_blank" class="link-item full-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>زيارة موقعي الإلكتروني</span>
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
