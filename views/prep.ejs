@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextap - طلبات التحضير</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --bg-color: #f5f7fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input, textarea, select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .btn-add {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border-right: 5px solid var(--warning-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .order-card.completed {
+            border-right-color: var(--success-color);
+            opacity: 0.8;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-completed { background: #d4edda; color: #155724; }
+
+        .order-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .order-info {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .order-note {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-status {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .btn-complete { background: var(--success-color); color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 طلبات التحضير</h1>
+            <a href="/" class="back-btn">العودة للرئيسية</a>
+        </div>
+
+        <% if (user.role !== 'viewer') { %>
+        <div class="card">
+            <h2>إضافة طلب تحضير جديد</h2>
+            <form action="/prep/add" method="POST">
+                <div class="form-grid">
+                    <input type="text" name="product" placeholder="اسم المنتج" required>
+                    <input type="number" name="quantity" placeholder="الكمية" required>
+                    <input type="text" name="note" placeholder="ملاحظات التحضير">
+                </div>
+                <button type="submit" class="btn-add">إرسال الطلب</button>
+            </form>
+        </div>
+        <% } %>
+
+        <div class="orders-grid">
+            <% prepOrders.forEach(order => { %>
+                <div class="order-card <%= order.status === 'completed' ? 'completed' : '' %>">
+                    <span class="status-badge status-<%= order.status %>">
+                        <%= order.status === 'pending' ? 'قيد التحضير' : 'تم التحضير' %>
+                    </span>
+                    <div class="order-title"><%= order.product %></div>
+                    <div class="order-info">الكمية: <strong><%= order.quantity %></strong></div>
+                    <div class="order-info">التاريخ: <%= order.date %></div>
+                    <% if (order.note) { %>
+                        <div class="order-note">"<%= order.note %>"</div>
+                    <% } %>
+                    
+                    <% if (order.status === 'pending' && user.role !== 'viewer') { %>
+                        <div class="actions">
+                            <button class="btn-status btn-complete" onclick="updateStatus(<%= order.id %>, 'completed')">تم التحضير ✅</button>
+                        </div>
+                    <% } %>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(id, status) {
+            fetch('/prep/update-status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status })
+            }).then(() => location.reload());
+        }
+    </script>
+</body>
+</html>

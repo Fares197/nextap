@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="description" content="نظام إدارة متقدم للمشتريات والمبيعات">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nextap">
+    <link rel="apple-touch-icon" href="/assets/logo.png">
+    <link rel="manifest" href="/assets/manifest.json">
+    <title>Nextap - لوحة التحكم</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-logo-img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-right: 5px solid #3498db;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card.purchases { border-right-color: #e74c3c; }
+        .stat-card.sales { border-right-color: #2ecc71; }
+        .stat-card.profit { border-right-color: #f39c12; }
+        .stat-card.prep { border-right-color: #3498db; }
+
+        .stat-label { color: #7f8c8d; font-size: 12px; margin-bottom: 5px; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #2c3e50; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container, .recent-sales {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: ''; width: 4px; height: 24px; background: #3498db; border-radius: 2px;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .nav-btn.purchases { background: #e74c3c; }
+        .nav-btn.sales { background: #2ecc71; }
+        .nav-btn.stock { background: #9b59b6; }
+        .nav-btn.prep { background: #3498db; }
+        .nav-btn.users { background: #2c3e50; }
+
+        .icon { font-size: 30px; }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; text-align: center; }
+            .nav-buttons { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>
+            <img src="/assets/logo.png" alt="Nextap Logo" class="navbar-logo-img">
+            Nextap
+        </h1>
+        <div class="user-info">
+            <span>مرحباً، <strong><%= user.name %></strong></span>
+            <a href="/logout" class="logout-btn">تسجيل الخروج</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card purchases">
+                <div class="stat-label">🛒 إجمالي المشتريات</div>
+                <div class="stat-value"><%= stats.totalPurchases %></div>
+            </div>
+            <div class="stat-card sales">
+                <div class="stat-label">💰 إجمالي المبيعات</div>
+                <div class="stat-value"><%= stats.totalSales %></div>
+            </div>
+            <div class="stat-card profit">
+                <div class="stat-label">📈 الربح المتوقع</div>
+                <div class="stat-value"><%= stats.profit %></div>
+            </div>
+            <div class="stat-card prep">
+                <div class="stat-label">📋 طلبات قيد التحضير</div>
+                <div class="stat-value"><%= stats.pendingPrep %></div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="chart-container">
+                <h3>📊 توزيع المخزون</h3>
+                <canvas id="stockChart"></canvas>
+            </div>
+            <div class="recent-sales">
+                <h3>🔔 آخر المبيعات</h3>
+                <% stats.recentSales.forEach(sale => { %>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                        <span><%= sale.product %></span>
+                        <span style="color: #2ecc71; font-weight: bold;"><%= (sale.quantity * sale.price).toFixed(2) %></span>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
+        <div class="section-title">إدارة النظام</div>
+        <div class="nav-buttons">
+            <a href="/purchases" class="nav-btn purchases">
+                <span class="icon">🛒</span>
+                <span>المشتريات</span>
+            </a>
+            <a href="/sales" class="nav-btn sales">
+                <span class="icon">💰</span>
+                <span>المبيعات</span>
+            </a>
+            <a href="/stock" class="nav-btn stock">
+                <span class="icon">📦</span>
+                <span>المخزون</span>
+            </a>
+            <a href="/prep" class="nav-btn prep">
+                <span class="icon">📋</span>
+                <span>طلبات التحضير</span>
+            </a>
+            <% if (user.role === 'admin') { %>
+            <a href="/users" class="nav-btn users">
+                <span class="icon">👥</span>
+                <span>إدارة المستخدمين</span>
+            </a>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        fetch('/api/chart-data')
+            .then(res => res.json())
+            .then(data => {
+                const ctx = document.getElementById('stockChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.stockLabels,
+                        datasets: [{
+                            data: data.stockValues,
+                            backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+                });
+            });
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/assets/service-worker.js');
+        }
+    </script>
+</body>
+</html>

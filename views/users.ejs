@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextap - إدارة المستخدمين</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --bg-color: #f5f7fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .back-btn {
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .btn-add {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: var(--secondary-color);
+            color: white;
+            padding: 12px;
+            text-align: right;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .role-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .role-admin { background: #ffeaa7; color: #d35400; }
+        .role-editor { background: #dff9fb; color: #0984e3; }
+        .role-viewer { background: #f1f2f6; color: #2f3542; }
+
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <img src="/assets/logo.png" alt="Logo" class="logo-img">
+                <h1>إدارة المستخدمين</h1>
+            </div>
+            <a href="/" class="back-btn">العودة للرئيسية</a>
+        </div>
+
+        <div class="card">
+            <h2>إضافة مستخدم جديد</h2>
+            <form action="/users/add" method="POST">
+                <div class="form-grid">
+                    <input type="text" name="name" placeholder="الاسم الكامل" required>
+                    <input type="text" name="username" placeholder="اسم المستخدم" required>
+                    <input type="password" name="password" placeholder="كلمة السر" required>
+                    <select name="role" required>
+                        <option value="viewer">مشاهد فقط</option>
+                        <option value="editor">محرر (إضافة وتعديل)</option>
+                        <option value="admin">مدير نظام</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-add">إضافة مستخدم</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>قائمة المستخدمين</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>اسم المستخدم</th>
+                        <th>الصلاحية</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% usersList.forEach(u => { %>
+                        <tr>
+                            <td><%= u.name %></td>
+                            <td><%= u.username %></td>
+                            <td>
+                                <span class="role-badge role-<%= u.role %>">
+                                    <%= u.role === 'admin' ? 'مدير' : (u.role === 'editor' ? 'محرر' : 'مشاهد') %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if (u.id !== user.id) { %>
+                                    <button class="btn-delete" onclick="deleteUser(<%= u.id %>)">حذف</button>
+                                <% } else { %>
+                                    <span style="color: #999; font-size: 12px;">أنت</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function deleteUser(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+                fetch('/users/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                }).then(res => res.json())
+                .then(data => {
+                    if (data.success) location.reload();
+                    else alert(data.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

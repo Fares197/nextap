@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextap - المخزون</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 20px;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2c3e50;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        a {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .stock-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stock-card {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stock-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stock-card.low {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .stock-card.high {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        .stock-card-product {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .stock-card-quantity {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stock-card-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        th {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            text-align: right;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .quantity {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 18px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.low {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .status-badge.medium {
+            background: #f39c12;
+            color: white;
+        }
+
+        .status-badge.high {
+            background: #2ecc71;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stock-cards {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <img src="/assets/logo.png" alt="Nextap Logo" style="width: 45px; height: 45px; object-fit: contain;">
+            <h1>📋 إدارة المخزون</h1>
+        </div>
+        <a href="/" class="back-btn">← العودة للرئيسية</a>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>قائمة المخزون</h1>
+            <div class="buttons">
+                <a href="/export/stock" class="btn-success">📥 تصدير CSV</a>
+            </div>
+        </div>
+
+        <% if (stock.length > 0) { %>
+            <!-- بطاقات المخزون -->
+            <div class="stock-cards">
+                <% stock.forEach(item => {
+                    let status = 'high';
+                    let statusText = 'متوفر';
+                    if (item.quantity < 5) {
+                        status = 'low';
+                        statusText = 'منخفض';
+                    } else if (item.quantity < 10) {
+                        status = 'medium';
+                        statusText = 'متوسط';
+                    }
+                %>
+                    <div class="stock-card <%= status %>">
+                        <div class="stock-card-product"><%= item.product %></div>
+                        <div class="stock-card-quantity"><%= item.quantity %></div>
+                        <div class="stock-card-label">الكمية المتاحة</div>
+                    </div>
+                <% }); %>
+            </div>
+
+            <!-- جدول المخزون -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>المنتج</th>
+                        <th>الكمية المتاحة</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% stock.forEach(item => {
+                        let status = 'high';
+                        let statusText = 'متوفر بكثرة';
+                        if (item.quantity < 5) {
+                            status = 'low';
+                            statusText = 'منخفض جداً';
+                        } else if (item.quantity < 10) {
+                            status = 'medium';
+                            statusText = 'متوسط';
+                        }
+                    %>
+                        <tr>
+                            <td><strong><%= item.product %></strong></td>
+                            <td class="quantity"><%= item.quantity %></td>
+                            <td>
+                                <span class="status-badge <%= status %>"><%= statusText %></span>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <div class="empty-message">
+                <p>📦 لا توجد منتجات في المخزون حالياً</p>
+                <p style="font-size: 12px; margin-top: 10px;">أضف مشتريات أو مبيعات لتحديث المخزون</p>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

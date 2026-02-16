@@ -1,0 +1,84 @@
+{
+  "name": "Nextap - نظام إدارة المشتريات والمبيعات",
+  "short_name": "Nextap",
+  "description": "تطبيق متقدم لإدارة المشتريات والمبيعات والمخزون بسهولة واحترافية",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#2c3e50",
+  "categories": ["business", "productivity"],
+  "screenshots": [
+    {
+      "src": "/assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logo.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "المشتريات",
+      "short_name": "المشتريات",
+      "description": "الذهاب إلى صفحة المشتريات",
+      "url": "/purchases",
+      "icons": [
+        {
+          "src": "/assets/logo.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "المبيعات",
+      "short_name": "المبيعات",
+      "description": "الذهاب إلى صفحة المبيعات",
+      "url": "/sales",
+      "icons": [
+        {
+          "src": "/assets/logo.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "المخزون",
+      "short_name": "المخزون",
+      "description": "الذهاب إلى صفحة المخزون",
+      "url": "/stock",
+      "icons": [
+        {
+          "src": "/assets/logo.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
